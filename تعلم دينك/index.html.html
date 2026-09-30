@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f7f1">
+    <meta name="description" content="موقع إسلامي تفاعلي للتعلّم عن القرآن والحديث والفقه والسيرة والأخلاق.">
+    <title>اتعلم دينك</title>
+    <link rel="stylesheet" href="style.css?v=34">
+    <script src="app.js?v=40" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-credit"><strong>صانع الموقع: بسام هيثم باطرفي</strong></div>
+      <div class="site-search-wrap">
+      <button id="site-search-toggle" class="site-search-toggle" type="button" aria-expanded="false" aria-controls="site-search-form">🔍 البحث في القرآن والأحاديث والأدعية</button>
+      <form id="site-search-form" class="site-search" role="search" hidden>
+        <label class="visually-hidden" for="site-search-input">ابحث في القرآن والأحاديث والأدعية</label>
+        <span aria-hidden="true">🔍</span><input id="site-search-input" type="search" placeholder="ابحث في القرآن والأحاديث والأدعية" autocomplete="off" aria-controls="site-search-results" aria-expanded="false">
+        <div id="site-search-results" class="site-search-results" role="listbox" hidden></div>
+      </form>
+      </div>
+      <nav class="quick-links" aria-label="أقسام الموقع"><a class="hadith-nav-link" href="#hadith-section">📚 الأحاديث</a><a class="hadith-nav-link" href="#duas-section">🤲 الأدعية</a><a class="hadith-nav-link" href="#prayer-times-section">🕰️ الصلاة</a></nav>
+      <span class="local-badge">خصوصيتك محفوظة</span>
+    </header>
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy"><p class="eyebrow">مساحتك للتعلّم النافع</p><h1>اتعلم دينك <span>بخطوات بسيطة</span></h1><p>تعلّم القرآن والحديث والفقه والسيرة والأخلاق بشرح واضح وأمثلة سهلة.</p></div>
+        <div class="hero-doodle" aria-hidden="true"><span>✦</span><div>📖</div><i>☪</i></div>
+      </section>
+      <audio id="app-narrator" preload="none" hidden aria-label="القارئ الصوتي المضمّن في التطبيق"></audio>
+
+      <section class="panel setup-panel" aria-labelledby="setup-title" hidden>
+        <div class="section-title"><span class="step-number">١</span><div><h2 id="setup-title">عرّفنا بمستواك وموضوعك الديني</h2><p>اختر مستواك، ثم اكتب ما تريد فهمه من أمور الدين.</p></div></div>
+        <form id="lesson-form">
+          <div class="form-grid">
+            <label>المستوى الدراسي
+              <select id="grade" required>
+                <optgroup label="المرحلة الابتدائية">
+                  <option>أول ابتدائي</option><option>ثاني ابتدائي</option><option>ثالث ابتدائي</option><option>رابع ابتدائي</option><option>خامس ابتدائي</option><option>سادس ابتدائي</option>
+                </optgroup>
+                <optgroup label="المرحلة المتوسطة">
+                  <option>أول متوسط</option><option>ثاني متوسط</option><option>ثالث متوسط</option>
+                </optgroup>
+                <optgroup label="المرحلة الثانوية">
+                  <option>أول ثانوي</option><option>ثاني ثانوي</option><option>ثالث ثانوي</option>
+                </optgroup>
+              </select>
+            </label>
+            <label>المجال
+              <select id="subject"><option>القرآن الكريم</option><option>الحديث الشريف</option><option>العقيدة والتوحيد</option><option>الفقه والعبادات</option><option>السيرة النبوية</option><option>الأخلاق والآداب الإسلامية</option></select>
+            </label>
+            <label class="wide">وش الموضوع الديني اللي تبي تفهمه؟
+              <input id="lesson" maxlength="120" placeholder="مثال: سورة الملك، الوضوء، أو حديث عن الصدق" required>
+            </label>
+            <label class="wide">أي جزء يحتاج شرحًا أكثر؟ <span class="optional">(اختياري)</span>
+              <textarea id="notes" maxlength="500" rows="3" placeholder="اكتب الآية أو الفكرة أو السؤال الذي تريد توضيحه."></textarea>
+            </label>
+          </div>
+          <button class="primary-button" type="submit">اشرح لي الموضوع <span>←</span></button>
+        </form>
+      </section>
+
+      <section id="quran-panel" class="panel quran-panel" aria-labelledby="quran-title">
+        <div class="quran-heading"><span class="mic-mark">📖</span><div><h3 id="quran-title">القرآن الكريم: تلاوة وحفظ</h3><p>ابحث عن أي سورة من السور الـ١١٤، واستمع إلى مقطع تختاره.</p></div></div>
+        <button id="start-noor" class="secondary-button" type="button">⭐ ابدأ بخطة سورة النور</button>
+        <p id="quran-progress" class="quran-progress" aria-live="polite"></p>
+        <div class="recitation-range">
+          <label>ابحث عن السورة
+            <input id="surah-search" list="surah-options" placeholder="اكتب اسم السورة، مثل النور" autocomplete="off">
+            <datalist id="surah-options"></datalist>
+          </label>
+          <select id="quran-surah" hidden aria-hidden="true"></select>
+          <label>من آية <input id="ayah-start" type="number" min="1" value="1"></label>
+          <label>إلى آية <input id="ayah-end" type="number" min="1" placeholder="فارغ = السورة كاملة"></label>
+        </div>
+        <div class="audio-options">
+          <label>اختر القارئ
+            <input id="qari-search" list="qari-options" placeholder="اكتب اسم القارئ" autocomplete="off">
+            <datalist id="qari-options"></datalist>
+            <select id="qari-select" hidden aria-hidden="true">
+              <option value="Yasser_Ad-Dussary_128kbps" selected>ياسر الدوسري</option>
+              <option value="Alafasy_128kbps">مشاري العفاسي</option>
+              <option value="Abdurrahmaan_As-Sudais_192kbps">عبدالرحمن السديس</option>
+              <option value="MaherAlMuaiqly128kbps">ماهر المعيقلي</option>
+              <option value="Husary_128kbps">محمود خليل الحصري</option>
+              <option value="Abdul_Basit_Murattal_192kbps">عبدالباسط عبدالصمد</option>
+              <option value="Abdullaah_3awwaad_Al-Juhaynee_128kbps">عبدالله عواد الجهني</option>
+              <option value="Abdullah_Basfar_192kbps">عبدالله بصفر</option>
+              <option value="Abdullah_Matroud_128kbps">عبدالله مطرود</option>
+              <option value="Abu_Bakr_Ash-Shaatree_128kbps">أبو بكر الشاطري</option>
+              <option value="Ahmed_ibn_Ali_al-Ajamy_128kbps_ketaballah.net">أحمد بن علي العجمي</option>
+              <option value="Ali_Jaber_64kbps">علي جابر</option>
+              <option value="Fares_Abbad_64kbps">فارس عباد</option>
+              <option value="Ghamadi_40kbps">سعد الغامدي</option>
+              <option value="Hani_Rifai_192kbps">هاني الرفاعي</option>
+              <option value="Hudhaify_128kbps">علي الحذيفي</option>
+              <option value="Ibrahim_Akhdar_32kbps">إبراهيم الأخضر</option>
+              <option value="Khaalid_Abdullaah_al-Qahtaanee_192kbps">خالد القحطاني</option>
+              <option value="Minshawy_Murattal_128kbps">محمد صديق المنشاوي</option>
+              <option value="Mohammad_al_Tablaway_128kbps">محمد الطبلاوي</option>
+              <option value="Muhammad_Ayyoub_128kbps">محمد أيوب</option>
+              <option value="Muhammad_Jibreel_128kbps">محمد جبريل</option>
+              <option value="Nasser_Alqatami_128kbps">ناصر القطامي</option>
+              <option value="Salah_Al_Budair_128kbps">صلاح البدير</option>
+              <option value="Saood_ash-Shuraym_128kbps">سعود الشريم</option>
+            </select>
+          </label>
+          <label>تكرار كل آية
+            <select id="ayah-repeat"><option value="1">مرة واحدة</option><option value="2">مرتين</option><option value="3">٣ مرات</option></select>
+          </label>
+        </div>
+        <button id="load-ayahs" class="secondary-button" type="button">جهّز السورة أو المقطع</button>
+        <p class="voice-note">اترك «إلى آية» فارغة ليكمل من آية البداية إلى نهاية السورة. اترك «من آية» على ١ لتشغيلها كاملة. اضغط تشغيل مرة واحدة؛ سيكمل القارئ تلقائيًا حتى النهاية، وتتحول الكلمة التي ينطقها إلى الأحمر ثم ترجع لطبيعتها. لا يحتاج إلى ميكروفون.</p>
+        <p id="recitation-status" class="feedback" aria-live="polite"></p>
+        <div id="ayah-text-display" class="ayah-text-display" lang="ar" dir="rtl" hidden></div>
+        <div id="audio-player-wrap" class="audio-player-wrap" hidden>
+          <audio id="quran-audio" preload="auto" aria-hidden="true"></audio>
+          <div class="combined-player" dir="rtl">
+            <button id="play-audio" class="secondary-button" type="button" aria-label="تشغيل المقطع">▶ تشغيل</button>
+            <label class="audio-seek-label">تقدّم المقطع كاملًا <input id="audio-seek" type="range" min="0" max="0" value="0" step="0.1" disabled></label>
+            <span id="audio-time" class="audio-time" aria-live="off">٠:٠٠ / —:——</span>
+          </div>
+          <button id="replay-audio" class="secondary-button" type="button">↻ أعد المقطع</button>
+        </div>
+        <button id="save-quran-progress" class="secondary-button" type="button" disabled>✅ راجعت هذا المقطع</button>
+      </section>
+
+      <section id="hadith-section" class="panel hadith-panel" aria-labelledby="hadith-title">
+        <div class="section-title"><span class="step-number">📚</span><div><p class="eyebrow">نص موثّق ومصدر واضح</p><h2 id="hadith-title">الأحاديث</h2><p>ابحث في المجموعة المختارة، أو تحقّق من حديث متداول في الموسوعة الحديثية.</p></div></div>
+        <label class="hadith-search-label" for="hadith-search">ابحث عن حديث أو موضوع
+          <input id="hadith-search" type="search" placeholder="مثال: الرفق، الصدق، لا تغضب" autocomplete="off">
+        </label>
+        <p id="hadith-count" class="hadith-count" aria-live="polite"></p>
+        <div class="story-reader-controls hadith-reader-controls"><button id="hadith-read-play" class="secondary-button" type="button">▶ متابعة القراءة</button><button id="hadith-read-pause" class="secondary-button" type="button">⏸ إيقاف مؤقت</button><button id="hadith-read-stop" class="secondary-button" type="button">⏹ إيقاف</button><span id="hadith-reader-status" aria-live="polite">صوت قارئ عربي مضمّن في التطبيق للقصص والأحاديث.</span></div>
+        <div id="hadith-results" class="hadith-results"></div>
+        <form class="hadith-verify-form" action="https://dorar.net/hadith/search" method="get" target="_blank">
+          <input type="hidden" name="st" value="w">
+          <label for="hadith-verify-query">للتحقق من حديث تسمعه أو تراه، ابحث في الموسوعة الحديثية:</label>
+          <div class="hadith-search-row"><input id="hadith-verify-query" name="q" type="search" placeholder="اكتب نص الحديث أو جزءًا منه" required><button class="secondary-button" type="submit">ابحث وتحقق</button></div>
+        </form>
+        <p class="hadith-scope-note">هذه مجموعة مختارة للتعلّم وليست جميع الأحاديث المروية؛ فالمرويات كثيرة وتحتاج إلى تخريج ومراجعة. لا تنسب كلامًا إلى النبي ﷺ قبل التحقق من مصدره ودرجته.</p>
+      </section>
+
+      <section id="duas-section" class="panel duas-panel" aria-labelledby="duas-title">
+        <div class="section-title"><span class="step-number">🤲</span><div><p class="eyebrow">من القرآن الكريم والسنة الصحيحة</p><h2 id="duas-title">الأدعية ومعانيها</h2><p>ابحث عن دعاء أو اختر مصدره، واقرأ معناه ومتى يقال.</p></div></div>
+        <div class="dua-filters">
+          <label>ابحث عن دعاء أو معنى <input id="dua-search" type="search" placeholder="مثال: الرزق، العلم، قبل النوم" autocomplete="off"></label>
+          <label>المصدر <select id="dua-source-filter"><option value="all">الكل</option><option value="quran">من القرآن</option><option value="sunnah">من السنة</option></select></label>
+        </div>
+        <p id="dua-count" class="hadith-count" aria-live="polite"></p>
+        <div id="dua-results" class="dua-results"></div>
+      </section>
+
+      <section id="prayer-times-section" class="panel prayer-times-panel" aria-labelledby="prayer-times-title">
+        <div class="section-title"><span class="step-number">🕰️</span><div><p class="eyebrow">تتحدّث حسب اليوم والموقع</p><h2 id="prayer-times-title">أوقات الصلاة</h2><p>اختر مدينتك أو استخدم موقعك لتظهر الأوقات اليومية والصلاة القادمة.</p></div></div>
+        <form id="prayer-city-form" class="prayer-location-form">
+          <label>المدينة <input id="prayer-city" value="Riyadh" placeholder="مثال: الرياض" required></label>
+          <label>الدولة <input id="prayer-country" value="Saudi Arabia" placeholder="مثال: السعودية" required></label>
+          <label>طريقة الحساب <select id="prayer-method"><option value="4" selected>أم القرى (السعودية)</option><option value="3">رابطة العالم الإسلامي</option><option value="2">أمريكا الشمالية</option><option value="5">الهيئة المصرية</option><option value="8">منطقة الخليج</option></select></label>
+          <button class="secondary-button" type="submit">اعرض الأوقات</button>
+          <button id="use-my-location" class="secondary-button" type="button">📍 استخدم موقعي</button>
+        </form>
+        <div id="prayer-times-status" class="prayer-times-status" aria-live="polite">أحمّل أوقات الصلاة لمدينة الرياض…</div>
+        <div id="next-prayer-card" class="next-prayer-card" hidden><span>الصلاة القادمة</span><strong id="next-prayer-name"></strong><span id="next-prayer-countdown"></span></div>
+        <div id="prayer-times-list" class="prayer-times-list" aria-live="polite"></div>
+        <p id="prayer-location-note" class="hadith-scope-note">الأوقات محسوبة بحسب طريقة الحساب المحددة وقد تختلف دقائق عن تقويم المسجد المحلي. تُحدَّث تلقائيًا مع تغيّر اليوم.</p>
+      </section>
+
+      <section id="religion-topics-section" class="religion-topics-panel" aria-labelledby="religion-topics-title">
+        <h2 id="religion-topics-title" class="visually-hidden">موضوعات دينية</h2>
+        <div class="religion-topics-grid">
+          <article class="religion-topic" id="topic-tafsir"><h3>🔎 التفسير وتدبّر المعاني</h3><p>التفسير يساعد القارئ على فهم دلالة الآيات في ضوء اللغة والسياق وما ورد عن النبي ﷺ والصحابة، مع الاستفادة من كتب التفسير المعتمدة. والتدبّر هو التأمل فيما تهدي إليه الآية من إيمان وعمل وأخلاق، مع عدم اختراع معنى أو نسبة قول إلى الله بلا علم.</p><h4>طريقة نافعة لقراءة آية</h4><ol><li>اقرأ الآية وما قبلها وما بعدها حتى يتضح موضوع المقطع.</li><li>ابحث عن شرحها في مصدر معروف، ولا تكتفِ بمقتطف مجهول المصدر.</li><li>دوّن معنى أو فائدة واحدة بلغة واضحة، وميّز بين نص الآية وشرح المفسّر.</li><li>إذا وجدت أكثر من قول، فاذكر أن هناك أقوالًا ولا تختَر من عندك حكمًا شرعيًا.</li></ol><p>ابدأ بالسور القصيرة التي تقرؤها كثيرًا، ثم وسّع القراءة تدريجيًا. وعند وجود سؤال عقدي أو فقهي دقيق، اسأل معلّمًا موثوقًا بدل استنتاج جواب من آية منفردة.</p></article>
+          <article class="religion-topic" id="topic-tajweed"><h3>🗣️ التجويد وأحكام التلاوة</h3><p>التجويد هو تعلّم نطق الحروف القرآنية نطقًا سليمًا، وإعطاء كل حرف حقه من المخرج والصفة، ومراعاة أحكام القراءة. الهدف أن تتحسن التلاوة بهدوء، لا أن تتحول القراءة إلى سباق في المصطلحات.</p><h4>محاور تتعلمها بالتدرّج</h4><ul><li><strong>مخارج الحروف:</strong> تعرّف موضع خروج الحرف، ودرّب أذنك على الفروق بين الحروف المتقاربة.</li><li><strong>أحكام النون الساكنة والتنوين:</strong> الإظهار والإدغام والإقلاب والإخفاء، مع أمثلة يشرحها معلّم أو كتاب موثوق.</li><li><strong>أحكام الميم الساكنة:</strong> تعلّم الإظهار الشفوي والإدغام الشفوي والإخفاء الشفوي.</li><li><strong>المدود والوقف:</strong> انتبه إلى مقدار المد بحسب نوعه، وإلى الوقف الذي يحفظ المعنى.</li></ul><p>استمع إلى قارئ متقن، وردّد آية قصيرة، ثم سجّل صوتك وقارنه بهدوء. لا تعتمد على الكتابة وحدها في تصحيح النطق؛ فالتجويد أداء يُتلقى بالسماع والمشافهة. ويمكن للمبتدئ أن يتعلم قاعدة واحدة ثم يلاحظها في مواضع قليلة قبل الانتقال إلى غيرها.</p></article>
+          <article class="religion-topic" id="topic-aqeedah"><h3>🕋 العقيدة وأركان الإيمان</h3><p>العقيدة هي ما يعتقده المسلم في الله تعالى وأصول الإيمان. ومن أشهر أبوابها أركان الإيمان الستة: الإيمان بالله، وملائكته، وكتبه، ورسله، واليوم الآخر، والقدر خيره وشره. وهي مترابطة: فالإيمان بالرسل يقود إلى تصديق ما بلّغوه، والإيمان باليوم الآخر يذكّر بالمسؤولية عن العمل.</p><h4>كيف تدرس هذا الباب؟</h4><ol><li>ابدأ بمعنى كل ركن من مصدر تعليمي موثوق وبعبارات تناسب عمرك.</li><li>اربط المعلومة بما جاء في القرآن والسنة الصحيحة، وتحقق من نسبة النص ومصدره.</li><li>فرّق بين أصل متفق عليه وبين مسائل تفصيلية قد تحتاج إلى شرح أهل العلم.</li><li>اجعل أثر المعرفة واضحًا في حياتك: صدق التوكل، شكر النعمة، والحرص على الخير.</li></ol><p>من الأسئلة التي تساعد على الفهم: ما معنى أن أؤمن بالملائكة؟ ما المقصود باليوم الآخر؟ وكيف يجمع المسلم بين الأخذ بالأسباب والإيمان بالقدر؟ لا تتعجل في المسائل التي يكثر فيها الجدل، واطلب شرحًا هادئًا موثقًا.</p></article>
+          <article class="religion-topic" id="topic-fiqh"><h3>⚖️ الفقه والعبادات</h3><p>الفقه هو فهم الأحكام العملية التي يحتاجها المسلم في عبادته ومعاملاته. تعلّم العبادات على مراحل: الطهارة، ثم الصلاة، ثم الصيام، ثم الزكاة والحج بحسب الاستطاعة والحاجة. لكل عبادة شروط وأركان وآداب، وتفاصيلها تؤخذ من كتب موثوقة أو معلّم مؤهل.</p><h4>خريطة تعلم عملية</h4><ul><li><strong>الطهارة:</strong> تعرّف على الوضوء والغسل وما يحتاجه يومك، واسأل عن الحالات الخاصة.</li><li><strong>الصلاة:</strong> تعلّم مواقيتها وصفة أدائها وأركانها، ثم راجع ما قد يبطلها من مصدر موثوق.</li><li><strong>الصيام:</strong> افهم معنى الصوم وآدابه وأحكامه الأساسية، مع سؤال أهل العلم في الأعذار والحالات الصحية.</li><li><strong>الزكاة والحج:</strong> لكل منهما شروط وتفاصيل مرتبطة بالمال أو الاستطاعة، فلا تعتمد على مثال عام لحساب حالة خاصة.</li></ul><p>قد تجد اختلافًا معتبرًا بين المذاهب الفقهية في بعض الفروع. تعلّم الحكم الذي تعمل به من جهة موثوقة، واحترم الخلاف ولا تحوّل المسائل الاجتهادية إلى خصومة. هذا القسم للتعلّم العام ولا يغني عن فتوى لحالة شخصية.</p></article>
+          <article class="religion-topic" id="topic-wudu"><h3>💧 الوضوء خطوة بخطوة</h3><p>توضأ بهذا الترتيب المعروف في صفة وضوء النبي ﷺ، واغسل كل عضو حتى يعمّه الماء من غير إسراف. هذه طريقة تعليمية شائعة؛ إن كان في منهجك الفقهي تفصيل مختلف في بعض السنن أو الأركان فاتبع ما يشرحه معلّمك.</p><ol><li><strong>استحضر النية بقلبك</strong> للطهارة، وابدأ بقول «بسم الله».</li><li><strong>اغسل كفيك</strong>، ثم تمضمض واستنشق الماء بلطف، وأخرج ما في الأنف.</li><li><strong>اغسل وجهك</strong> كاملًا من منابت الشعر المعتادة إلى أسفل الذقن، ومن الأذن إلى الأذن.</li><li><strong>اغسل ذراعيك إلى المرفقين</strong>، وابدأ باليمنى ثم اليسرى، وتأكد من وصول الماء إلى المرفق.</li><li><strong>امسح رأسك وأذنيك</strong> بيدين مبتلتين وفق الصفة التي تعلمتها.</li><li><strong>اغسل قدميك إلى الكعبين</strong>، وابدأ باليمنى ثم اليسرى، ومرر الماء بين الأصابع.</li><li><strong>تحقق مرة واحدة</strong> أن الماء وصل إلى الأعضاء، ثم انتهِ. لا تكرر الغسل بسبب الشك وحده.</li></ol><h4>تعلّمها بنفسك</h4><p>اقرأ الخطوات مرة، ثم نفّذها أمام المرآة من دون استعجال. بعد ذلك أغلق النص واشرح الترتيب بصوتك: الكفان، الفم والأنف، الوجه، الذراعان، الرأس، القدمان. إن نسيت خطوة فارجع إليها وتدرّب مرة أخرى. في حالة جرح أو جبيرة أو تعذر استعمال الماء، اسأل معلّمًا موثوقًا عن الحكم الخاص بحالتك.</p></article>
+          <article class="religion-topic" id="topic-seerah"><div class="story-reader-controls seerah-reader-controls"><button id="seerah-read-play" class="secondary-button" type="button">▶ اقرأ السيرة</button><button id="seerah-read-pause" class="secondary-button" type="button">⏸ إيقاف مؤقت</button><button id="seerah-read-stop" class="secondary-button" type="button">⏹ إيقاف</button></div><h3>🌙 السيرة النبوية</h3><p>السيرة النبوية دراسة لحياة النبي محمد ﷺ ودعوته، وكيف نزل الوحي وتكوّن المجتمع المسلم الأول. نتعلم منها الثبات والرحمة والحكمة، ونحرص على التمييز بين ما ثبت في المصادر وبين القصص التي اشتهرت بلا سند واضح.</p><h4>محطات السيرة</h4><ol><li><strong>قبل البعثة:</strong> نشأ النبي ﷺ في مكة، وعُرف بين قومه بالصدق والأمانة. تعرّف على البيئة التي عاش فيها العرب لفهم التغير الذي أحدثته الرسالة.</li><li><strong>بداية الوحي والدعوة في مكة:</strong> نزل الوحي، ودعا النبي ﷺ إلى عبادة الله وحده. واجه المسلمون الأوائل أذى وضغطًا، فظهر الصبر والثبات والتكافل بينهم.</li><li><strong>الهجرة إلى المدينة:</strong> انتقل المسلمون إلى مجتمع جديد، وبدأت مرحلة بناء جماعة تجمعها العبادة والتعاون والوفاء بالعهد.</li><li><strong>بناء المجتمع المدني:</strong> نظّمت السيرة العلاقات بين المهاجرين والأنصار، وأظهرت مواقف في الشورى والرحمة والعدل والالتزام بالعهود.</li><li><strong>الصلح وفتح مكة وحجة الوداع:</strong> تُدرس هذه المحطات لفهم الحكمة في التعامل مع الخصوم، والعفو عند القدرة، وبيان أصول الرسالة قبل وفاة النبي ﷺ.</li></ol><p>اقرأ كل محطة بترتيبها، واسأل: ما القرار الذي اتُّخذ؟ ما الظروف التي أحاطت به؟ وما الخلق الذي يظهر فيه؟ بهذه الأسئلة تصبح السيرة فهمًا عمليًا، لا قائمة أسماء وتواريخ فقط. لا تنسب مقولة أو معجزة إلى السيرة حتى تتحقق من مصدرها.</p><h4>رحلة السيرة من مكة إلى المدينة</h4><ol><li>وُلد النبي محمد ﷺ في مكة من قريش، ونشأ يتيمًا؛ ويذكّره القرآن بنعمة الله عليه في سورة الضحى.</li><li>رعاه أقاربه في طفولته، وعاش في مجتمع يعرف التجارة والقبائل والحج إلى البيت الحرام.</li><li>عمل في رعي الغنم والتجارة، وعُرف بين الناس بالصدق والأمانة قبل نزول الوحي.</li><li>تزوج خديجة رضي الله عنها، وكانت أول من صدّقه وسانده حين بدأ الوحي.</li><li>كان يختلي للعبادة في غار حراء، وهناك جاءه جبريل بأول الوحي من سورة العلق.</li><li>عاد إلى خديجة خائفًا مما رأى، فطمأنته وذكّرته بخصاله من صلة الرحم وإعانة المحتاج وإكرام الضيف.</li><li>بدأت الدعوة بمن آمن من أقرب الناس إليه، فآمنت خديجة وأبو بكر وعلي وزيد رضي الله عنهم.</li><li>علّم النبي ﷺ أصحابه القرآن والإيمان، واجتمعوا سرًا في بداية الدعوة حين كان المسلمون قلة.</li><li>بعد ذلك جهر بالدعوة، ودعا قريشًا إلى عبادة الله وحده وترك عبادة الأصنام.</li><li>قاومت قريش الدعوة، وتعرض المسلمون للأذى، فثبت النبي ﷺ وأصحابه وصبروا.</li><li>أذن النبي ﷺ لبعض أصحابه بالهجرة إلى الحبشة طلبًا للأمان، فاستقبلهم ملكها وأمّنهم.</li><li>استمر النبي ﷺ في دعوة القبائل والحجاج، يعرض عليهم رسالة التوحيد ويطلب النصرة للدعوة.</li><li>مر المسلمون بمقاطعة وضيق شديدين، ثم فقد النبي ﷺ خديجة وعمه أبا طالب في فترة متقاربة.</li><li>ذهب إلى الطائف يلتمس النصرة، فعاد إلى مكة بعد أن لقي أذى، ولم يدع على قومه بل رجا أن يخرج الله من أصلابهم من يعبده.</li><li>أكرمه الله برحلة الإسراء والمعراج، وفرضت الصلاة، فكانت الصلاة صلة يومية بين المسلم وربه.</li><li>آمن رجال من يثرب برسالته، ثم تمت بيعة العقبة، وتهيأت الهجرة إلى المدينة.</li><li>هاجر المسلمون تباعًا، ثم خرج النبي ﷺ مع أبي بكر رضي الله عنه، واختبآ في الغار حتى هدأ طلب قريش.</li><li>وصل النبي ﷺ إلى قباء ثم دخل المدينة، فاستقبله أهلها، وبدأ عهد جديد للمجتمع المسلم.</li><li>بنى المسجد، وآخى بين المهاجرين والأنصار، ونظم العلاقات والعهود في المدينة.</li><li>علّم أصحابه العبادة والقرآن، وقضى بين الناس، وبنى مجتمعًا يقوم على المسؤولية والتكافل.</li><li>وقعت غزوة بدر، فانتصر المسلمون رغم قلة عددهم، وكانت محطة فارقة في تاريخ الجماعة الجديدة.</li><li>في أُحد تعلّم المسلمون أثر مخالفة الأمر، وثبت النبي ﷺ مع أصحابه رغم ما أصابهم.</li><li>في غزوة الخندق شارك النبي ﷺ أصحابه في حفر الخندق، وتعاون أهل المدينة على الدفاع عنها.</li><li>خرج النبي ﷺ وأصحابه قاصدين العمرة، ثم عقدوا صلح الحديبية؛ وكان الصلح بداية مرحلة اتسعت فيها الدعوة.</li><li>بعد نقض العهد، عاد النبي ﷺ إلى مكة، فدخلها منتصرًا وأزال الأصنام من حول الكعبة، وأمّن الناس وعفا عن كثير ممن آذوه.</li><li>واصل النبي ﷺ تعليم الوفود والقبائل، وأرسل معلمين وولاة، وبيّن أحكام الإسلام وأخلاقه.</li><li>قاد المسلمون حملة تبوك في ظروف صعبة، وأظهر الصحابة فيها الصبر والإنفاق والطاعة.</li><li>في العام التالي حج النبي ﷺ حجة الوداع، وعلّم الناس مناسكهم وأكد حرمة الدماء والأموال والحقوق.</li><li>عاد إلى المدينة، واستمر في تعليم أصحابه حتى اشتد به المرض.</li><li>توفي النبي ﷺ في المدينة بعد أن بلّغ الرسالة وأدى الأمانة، وترك للمسلمين القرآن وهديه وسنته الثابتة.</li></ol><p class="hadith-scope-note">هذه خلاصة تعليمية مرتبة، وليست بديلًا عن كتاب سيرة موثوق. اعتمد على القرآن والأحاديث الصحيحة، وتحقق من تفاصيل الروايات التاريخية قبل نقلها.</p></article>
+          <article class="religion-topic" id="topic-prophets"><h3>📜 قصص الأنبياء</h3><p>اختر اسم نبي لتظهر قصته كما يعرضها القرآن، بترتيب أحداثها ومصادر السور. القصص لا تتساوى في مقدار التفاصيل؛ إذا لم يذكر القرآن تفاصيل عن زمن أو مكان فلن أضيفها من الخيال.</p><div id="prophet-directory" class="prophet-directory" aria-label="اختر نبيًا لقراءة قصته"></div><article id="prophet-story" class="prophet-story" aria-live="polite" hidden><h4 id="prophet-story-title"></h4><div class="story-reader-controls"><button id="story-read-play" class="secondary-button" type="button">▶ اقرأ القصة</button><button id="story-read-pause" class="secondary-button" type="button">⏸ إيقاف مؤقت</button><button id="story-read-stop" class="secondary-button" type="button">⏹ إيقاف</button><span id="story-reader-status" aria-live="polite">صوت قارئ عربي واحد مضمّن في التطبيق.</span></div><div id="prophet-story-text"></div><p id="prophet-story-sources" class="prophet-story-sources"></p></article></article>
+          <article class="religion-topic" id="topic-manners"><h3>💚 الأخلاق والآداب</h3><p>الأخلاق تظهر في طريقة تعاملنا اليومية؛ في البيت والمدرسة والشارع والإنترنت. يربّي الإسلام على الصدق والرحمة والأمانة والعدل وبرّ الوالدين وحفظ اللسان. ولا يكفي أن نعرف اسم الخُلُق؛ المهم أن نتدرّب على فعله عند المواقف الحقيقية.</p><h4>أمثلة من الحياة</h4><ul><li><strong>الصدق:</strong> إذا أخطأت في واجب أو موقف، قل الحقيقة واطلب فرصة لإصلاح الخطأ بدل اختراع عذر.</li><li><strong>الأمانة:</strong> أعد الشيء المستعار كما أخذته، ولا تنشر صورة أو كلامًا خاصًا من دون إذن.</li><li><strong>الرحمة:</strong> ساعد من تعثّر، وتحدث بلطف مع الأصغر سنًا، ولا تسخر من خطأ أحد.</li><li><strong>حفظ اللسان:</strong> قبل إرسال رسالة، اسأل نفسك: هل هي صحيحة؟ هل فيها أذى أو غيبة؟ وهل أقبل أن تُقال عني؟</li><li><strong>برّ الوالدين:</strong> استمع باحترام، ساعد في أمر تستطيع فعله، واعتذر إذا قصّرت.</li><li><strong>الاختلاف بأدب:</strong> ناقش الفكرة بلا إهانة، واعترف إذا لم تكن تعرف الجواب.</li></ul><p>اختر خُلُقًا واحدًا كل أسبوع، واكتب موقفًا طبّقته فيه وموقفًا تريد تحسينه. الأخلاق لا تعني السكوت عن الظلم أو قبول الأذى؛ اطلب مساعدة شخص بالغ موثوق عند الحاجة، واطلب الحق بأسلوب آمن ومحترم.</p></article>
+          <article class="religion-topic" id="topic-islamic-history"><h3>🏛️ التاريخ الإسلامي</h3><p>التاريخ الإسلامي سجلّ لتجارب مجتمعات المسلمين عبر عصور مختلفة، وفيه إنجازات واختلافات وأحداث تحتاج إلى قراءة متوازنة. نميّز فيه بين النص الديني وبين رواية المؤرخ، ونقارن المصادر، ولا نختزل تاريخ قرون في حكم واحد.</p><h4>محطات تساعدك على ترتيب الصورة</h4><ol><li><strong>عصر النبوة:</strong> نشأة الجماعة المسلمة في مكة والمدينة، وتشكّل مجتمع جديد حول القرآن والرسالة.</li><li><strong>الخلافة الراشدة:</strong> مرحلة تلت وفاة النبي ﷺ، شهدت إدارة شؤون الدولة واتساع المجتمع المسلم؛ ادرس الأحداث من مصادر تاريخية متعددة.</li><li><strong>الدول الإسلامية اللاحقة:</strong> تعاقبت دول ومراكز حكم متعددة، وتغيرت عواصمها وإدارتها وثقافاتها عبر الزمن.</li><li><strong>الحياة العلمية:</strong> ازدهرت في فترات مختلفة حركة التأليف والترجمة والفقه والطب والرياضيات والفلك، وشارك فيها علماء من أقاليم وثقافات متنوعة.</li><li><strong>التنوع الحضاري:</strong> ترك المسلمون آثارًا في العمارة واللغة والتعليم والتجارة، وتفاعلت المجتمعات الإسلامية مع جيرانها بطرق متعددة.</li></ol><p>عند دراسة حدث تاريخي، دوّن زمنه ومكانه وأطرافه، ثم اسأل من كتب الرواية ومتى، وما الأدلة التي يذكرها. افصل بين المعلومة المؤكدة والتفسير الشخصي، وتجنب المنشورات التي تعرض اقتباسًا بلا كتاب أو مصدر. الهدف فهم الماضي بدقة والاستفادة منه، لا تمجيد كل حدث أو رفضه كله.</p></article>
+        </div>
+      </section>
+
+      <section id="plan" class="panel plan-panel" aria-live="polite" hidden>
+        <div class="section-title"><span class="step-number">٢</span><div><p class="eyebrow" id="plan-context"></p><h2 id="plan-title"></h2></div></div>
+        <p id="plan-notes" class="saved-notes" hidden></p>
+        <div id="explanation" class="explanation"></div>
+        <button id="more-button" class="secondary-button more-button" type="button">ما فهمت، اشرح أكثر</button>
+        <p id="detail-level" class="detail-level" aria-live="polite">شرح مبسّط</p>
+        <div class="example-box"><strong>خلّنا نجرب مع بعض</strong><p id="example"></p></div>
+        <form id="answer-form" class="answer-form">
+          <label id="question-label" for="answer"></label>
+          <div class="answer-row"><input id="answer" autocomplete="off" placeholder="اكتب إجابتك هنا" required><button class="primary-button" type="submit">تحقق</button></div>
+          <button id="hint-button" class="hint-button" type="button">أعطني تلميحًا</button>
+          <p id="feedback" class="feedback" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="saved-section">
+        <div class="saved-heading"><div><p class="eyebrow">ترجع لها متى ما احتجت</p><h2>موضوعاتي الإسلامية</h2></div><span id="lesson-count" class="count-pill">٠ موضوع</span></div>
+        <div id="saved-lessons" class="saved-lessons"></div>
+        <p id="saved-empty" class="empty-message">لما تحفظ أول موضوع، بتلقاه هنا.</p>
+      </section>
+    </main>
+    <footer><span>زاد · تعلّم ديني مبسّط</span><span>بياناتك محفوظة في هذا المتصفح فقط.</span></footer>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
